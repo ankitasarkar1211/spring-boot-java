@@ -1,10 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Student Management System</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
 </head>
+
 <body>
+
+<div class="container">
+
+    <h1>Student Management System</h1>
+
+    <!-- Add Student -->
+
+    <div class="card">
+
+        <h2>Add Student</h2>
+
+        <form action="/students/add" method="post">
+
+            <input type="text"
+                   name="name"
+                   placeholder="Name"
+                   required>
+
+            <input type="email"
+                   name="email"
+                   placeholder="Email"
+                   required>
+
+            <input type="text"
+                   name="course"
+                   placeholder="Course"
+                   required>
+
+            <input type="number"
+                   name="age"
+                   placeholder="Age"
+                   required>
+
+            <button type="submit">
+                Add Student
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="card">
+
+        <h2>Search Student</h2>
+
+        <form action="/students/search"
+              method="get">
+
+            <input type="number"
+                   name="id"
+                   placeholder="Enter Student ID"
+                   required>
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+        <div th:if="${student != null}">
+
+            <h3>Search Result</h3>
+
+            <p>
+                ID:
+                <span th:text="${student.id}"></span>
+            </p>
+
+            <p>
+                Name:
+                <span th:text="${student.name}"></span>
+            </p>
+
+            <p>
+                Email:
+                <span th:text="${student.email}"></span>
+            </p>
+
+            <p>
+                Course:
+                <span th:text="${student.course}"></span>
+            </p>
+
+            <p>
+                Age:
+                <span th:text="${student.age}"></span>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Edit Form -->
+
+    <div class="card"
+         th:if="${editStudent != null}">
+
+        <h2>Update Student</h2>
+
+        <form th:action="@{'/students/update/' + ${editStudent.id}}"
+              method="post">
+
+            <input type="text"
+                   name="name"
+                   th:value="${editStudent.name}"
+                   required>
+
+            <input type="email"
+                   name="email"
+                   th:value="${editStudent.email}"
+                   required>
+
+            <input type="text"
+                   name="course"
+                   th:value="${editStudent.course}"
+                   required>
+
+            <input type="number"
+                   name="age"
+                   th:value="${editStudent.age}"
+                   required>
+
+            <button type="submit">
+                Update
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Student Table -->
+
+    <div class="card">
+
+        <h2>All Students</h2>
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Age</th>
+                <th>Actions</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="student : ${students}">
+
+                <td th:text="${student.id}"></td>
+
+                <td th:text="${student.name}"></td>
+
+                <td th:text="${student.email}"></td>
+
+                <td th:text="${student.course}"></td>
+
+                <td th:text="${student.age}"></td>
+
+                <td>
+
+                    <a th:href="@{'/students/edit/' + ${student.id}}">
+                        Edit
+                    </a>
+
+                    <a th:href="@{'/students/delete/' + ${student.id}}"
+                       onclick="return confirm('Delete this student?')">
+                        Delete
+                    </a>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script th:src="@{/js/script.js}"></script>
 
 </body>
 </html>
